@@ -1,17 +1,17 @@
 package com.example.Ask;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Staff {
-    private Long id;
-    private String name;
-    private String position;
-
-    public Staff() {}
-
-    public Staff(Long id, String name, String position) {
-        this.id = id;
-        this.name = name;
-        this.position = position;
-    }
+    private  Long id;
+    private  String name;
+    private  String position;
 
     public Long getId() {
         return id;
@@ -37,3 +37,4 @@ public class Staff {
         this.position = position;
     }
 }
+

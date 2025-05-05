@@ -1,9 +1,10 @@
 package com.example.Ask;
 
-
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -17,39 +18,34 @@ public class StaffController {
     }
 
     @GetMapping
-    public List<Staff> getAllStaff() {
-        return staffService.getAllStaff();
+    public List<Staff> getAll() {
+        return staffService.getAllStaffs();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Staff> getStaffById(@PathVariable Long id) {
+    public ResponseEntity<Staff> getById(@PathVariable Long id) {
         Staff staff = staffService.getStaffById(id);
-        if (staff == null) {
+        if (staff == null)
             return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(staff);
     }
 
     @PostMapping
-    public Staff createStaff(@RequestBody Staff staff) {
-        return staffService.createStaff(staff);
+    public ResponseEntity<Staff> create(@RequestBody Staff staff) {
+        Staff created = staffService.createStaff(staff);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Staff> updateStaff(@PathVariable Long id, @RequestBody Staff staff) {
-        Staff updated = staffService.updateStaff(id, staff);
-        if (updated == null) {
+    public ResponseEntity<Staff> update(@PathVariable Long id, @RequestBody Staff staff) {
+        if (staffService.getStaffById(id) == null)
             return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(updated);
+        return ResponseEntity.ok(staffService.updateStaff(id, staff));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStaff(@PathVariable Long id) {
-        if (staffService.deleteStaff(id)) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        staffService.deleteStaff(id);
+        return ResponseEntity.noContent().build();
     }
 }

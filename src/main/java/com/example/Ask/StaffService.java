@@ -1,41 +1,38 @@
 package com.example.Ask;
 
-
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 
 @Service
 public class StaffService {
+    private final Map<Long, Staff> staffMap = new HashMap<>();
+    private Long idCounter = 1L;
 
-    private Map<Long, Staff> staffRepo = new HashMap<>();
-    private Long currentId = 1L;
-
-    public List<Staff> getAllStaff() {
-        return new ArrayList<>(staffRepo.values());
+    public ArrayList<Staff> getAllStaffs() {
+        return new ArrayList<>(staffMap.values());
     }
 
     public Staff getStaffById(Long id) {
-        return staffRepo.get(id);
+        return staffMap.get(id);
     }
 
     public Staff createStaff(Staff staff) {
-        staff.setId(currentId++);
-        staffRepo.put(staff.getId(), staff);
+        staff.setId(idCounter++);
+        staffMap.put(staff.getId(), staff);
         return staff;
     }
 
     public Staff updateStaff(Long id, Staff updatedStaff) {
-        Staff existing = staffRepo.get(id);
-        if (existing != null) {
-            existing.setName(updatedStaff.getName());
-            existing.setPosition(updatedStaff.getPosition());
-            return existing;
-        }
-        return null;
+        updatedStaff.setId(id);
+        staffMap.put(id, updatedStaff);
+        return updatedStaff;
     }
 
-    public boolean deleteStaff(Long id) {
-        return staffRepo.remove(id) != null;
+    public void deleteStaff(Long id) {
+        staffMap.remove(id);
     }
 }
